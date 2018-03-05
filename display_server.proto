@@ -10,7 +10,10 @@ service WS2801_Display {
 // define msg for server
 message DISPLAY_MSG {
     int32 version = 1;
-    string user_list = 2;
+    int32 typ = 2;
+    int32 dim_x = 3;
+    int32 dim_y = 4;
+    string pixel_list = 5;
 }
 
 // define response msg
