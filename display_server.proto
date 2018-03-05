@@ -1,3 +1,19 @@
+syntax = "proto3";
+
+// service definition
 service WS2801_Display {
-   // (Method definitions not shown)
+   // Make RPC on function DISPLAY_CHANGE with message DISPLAY_MSG
+   // server response with DISPLAY_RESPONSE
+   rpc DISPLAY_CHANGE (DISPLAY_MSG) returns (DISPLAY_RESPONSE) {}
+}
+
+// define msg for server
+message DISPLAY_MSG {
+    int32 version = 1;
+    string user_list = 2;
+}
+
+// define response msg
+message DISPLAY_RESPONSE {
+    bool success = 1;
 }
