@@ -1,11 +1,12 @@
 # Simple demo of of the WS2801/SPI-like addressable RGB LED lights.
+from concurrent import futures
+import grpc
 import time
 import RPi.GPIO as GPIO
 
 # Import the WS2801 module.
 import Adafruit_WS2801
 import Adafruit_GPIO.SPI as SPI
-
 
 # Configure the count of pixels:
 PIXEL_COUNT = 160
@@ -17,7 +18,7 @@ SPI_PORT = 0
 SPI_DEVICE = 0
 pixels = Adafruit_WS2801.WS2801Pixels(PIXEL_COUNT, spi=SPI.SpiDev(SPI_PORT, SPI_DEVICE), gpio=GPIO)
 
-DISPLAY = [[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
+display = [[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
            [32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17],
            [33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48],
            [64, 63, 62, 61, 60, 59, 58, 57, 56, 55, 54, 53, 52, 51, 50, 49],
@@ -28,22 +29,22 @@ DISPLAY = [[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
            [129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144],
            [160, 159, 158, 157, 156, 155, 154, 153, 152, 151, 150, 149, 148, 147, 146, 145]]
 
-colors = [[Adafruit_WS2801.RGB_to_color(255, 255, 255) for y in range (PIXEL_HEIGHT)] for y in range (PIXEL_WIDTH)]
+colors = [[Adafruit_WS2801.RGB_to_color(255, 255, 255) for y in range(PIXEL_HEIGHT)] for x in range(PIXEL_WIDTH)]
+
 
 def main():
-    initialisation(pixels,DISPLAY, colors)
+    initialisation(pixels, display, colors)
 
-def initialisation(pixels, DISPLAY, colors):
+
+def initialisation(pixels, display, colors):
     # Clear all the pixels to turn them off.
     pixels.clear()
     for y in range(PIXEL_HEIGHT):
         for x in range(PIXEL_WIDTH):
-            pixels.set_pixel(DISPLAY[y][x] - 1, colors[x][y])
-            #print "Display wert: {}".format(DISPLAY[y][x] - 1 )
-            #print "DisplayColor wert: {}".format(colors[x][y])
+            pixels.set_pixel(display[y][x] - 1, colors[x][y])
+            # print "Display wert: {}".format(display[y][x] - 1 )
+            # print "DisplayColor wert: {}".format(colors[x][y])
     pixels.show()  # Make sure to call show() after changing any pixels!
-
-
 
 
 if __name__ == "__main__":
