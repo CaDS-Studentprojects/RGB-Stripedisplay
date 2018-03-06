@@ -8,6 +8,9 @@ import RPi.GPIO as GPIO
 import Adafruit_WS2801
 import Adafruit_GPIO.SPI as SPI
 
+import display_server_pb2
+import display_server_pb2_grpc
+
 # Configure the count of pixels:
 PIXEL_COUNT = 160
 PIXEL_WIDTH = 16
@@ -31,9 +34,25 @@ display = [[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
 
 colors = [[Adafruit_WS2801.RGB_to_color(255, 255, 255) for y in range(PIXEL_HEIGHT)] for x in range(PIXEL_WIDTH)]
 
+class GRPC_Server(display_server_pb2_grpc.DISPLAY_SERVICEServicer):
+
+    def DISPLAY_Change(self, request, context):
+        print "Received DISPLAY Change."
+        print request
+        return display_server_pb2.RFID_RESPONSE()
 
 def main():
     initialisation(pixels, display, colors)
+
+    server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
+    display_server_pb2_grpc.add_DISPLAY_SERVICEServicer_to_server(GRPC_Server(), server)
+    server.add_insecure_port('[::]:50051')
+    server.start()
+    try:
+        while True:
+            time.sleep(_ONE_DAY_IN_SECONDS)
+    except KeyboardInterrupt:
+        server.stop(0)
 
 
 def initialisation(pixels, display, colors):
