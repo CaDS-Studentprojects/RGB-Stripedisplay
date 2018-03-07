@@ -54,6 +54,8 @@ class GRPC_Server(display_server_pb2_grpc.WS2801_DisplayServicer):
         pixel_color = request.pixel_list.split(",")
 
         for x in range(PIXEL_COUNT):
+            #print pixel_color[x]
+            pixel_color[x]=int(pixel_color[x])
             print pixel_color[x]
 
         #colors = [[Adafruit_WS2801.RGB_to_color() for y in range(PIXEL_HEIGHT)] for x in range(PIXEL_WIDTH)]
