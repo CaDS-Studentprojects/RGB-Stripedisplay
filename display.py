@@ -1,7 +1,7 @@
 # Simple demo of of the WS2801/SPI-like addressable RGB LED lights.
+import time
 from concurrent import futures
 import grpc
-import time
 import RPi.GPIO as GPIO
 
 # Import the WS2801 module.
@@ -53,6 +53,7 @@ def main():
     try:
         while True:
             time.sleep(_ONE_DAY_IN_SECONDS)
+            print "Tick"
     except KeyboardInterrupt:
         server.stop(0)
 
