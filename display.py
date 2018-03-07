@@ -52,7 +52,7 @@ def main():
     server.start()
     try:
         while True:
-            time.sleep(_ONE_DAY_IN_SECONDS)
+            time.sleep(5)
             print "Tick"
     except KeyboardInterrupt:
         server.stop(0)
