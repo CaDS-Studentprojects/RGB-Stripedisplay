@@ -21,6 +21,9 @@ SPI_PORT = 0
 SPI_DEVICE = 0
 pixels = Adafruit_WS2801.WS2801Pixels(PIXEL_COUNT, spi=SPI.SpiDev(SPI_PORT, SPI_DEVICE), gpio=GPIO)
 
+# colors
+white = Adafruit_WS2801.RGB_to_color(255, 255, 255)
+
 _ONE_DAY_IN_SECONDS = 60 * 60 * 24
 
 display = [[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
@@ -34,7 +37,7 @@ display = [[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
            [129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144],
            [160, 159, 158, 157, 156, 155, 154, 153, 152, 151, 150, 149, 148, 147, 146, 145]]
 
-colors = [[Adafruit_WS2801.RGB_to_color(255, 255, 255) for y in range(PIXEL_HEIGHT)] for x in range(PIXEL_WIDTH)]
+colors = [[white for y in range(PIXEL_HEIGHT)] for x in range(PIXEL_WIDTH)]
 
 class GRPC_Server(display_server_pb2_grpc.WS2801_DisplayServicer):
 
