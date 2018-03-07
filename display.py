@@ -21,6 +21,8 @@ SPI_PORT = 0
 SPI_DEVICE = 0
 pixels = Adafruit_WS2801.WS2801Pixels(PIXEL_COUNT, spi=SPI.SpiDev(SPI_PORT, SPI_DEVICE), gpio=GPIO)
 
+updateDisplay = 0
+
 # colors
 white = Adafruit_WS2801.RGB_to_color(255, 255, 255)
 
@@ -68,7 +70,8 @@ class GRPC_Server(display_server_pb2_grpc.WS2801_DisplayServicer):
             for x in range(PIXEL_WIDTH):
                 colors = [[pixel_color[x+a] for y in range(PIXEL_WIDTH)] for x in range(PIXEL_HEIGHT)]
             a = a + 16
-        print colors
+        #print colors
+        updateDisplay = 1
         ###### Handle msg into display
         return display_server_pb2.DISPLAY_RESPONSE()
 
@@ -82,6 +85,8 @@ def main():
     try:
         while True:
             time.sleep(5)
+            if updateDisplay is 1:
+                update(pixels, display, colors)
             #print "Tick"
     except KeyboardInterrupt:
         server.stop(0)
@@ -97,6 +102,8 @@ def initialisation(pixels, display, colors):
             # print "DisplayColor wert: {}".format(colors[x][y])
     pixels.show()  # Make sure to call show() after changing any pixels!
 
+def update(pixels, display, colors):
+    print colors
 
 if __name__ == "__main__":
     main()
