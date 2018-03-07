@@ -15,7 +15,7 @@ class WS2801_DisplayStub(object):
       channel: A grpc.Channel.
     """
     self.DISPLAY_CHANGE = channel.unary_unary(
-        '/WS2801_Display/DISPLAY_CHANGE',
+        '/LED_display.WS2801_Display/DISPLAY_CHANGE',
         request_serializer=display__server__pb2.DISPLAY_MSG.SerializeToString,
         response_deserializer=display__server__pb2.DISPLAY_RESPONSE.FromString,
         )
@@ -43,5 +43,5 @@ def add_WS2801_DisplayServicer_to_server(servicer, server):
       ),
   }
   generic_handler = grpc.method_handlers_generic_handler(
-      'WS2801_Display', rpc_method_handlers)
+      'LED_display.WS2801_Display', rpc_method_handlers)
   server.add_generic_rpc_handlers((generic_handler,))
