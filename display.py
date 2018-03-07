@@ -17,8 +17,8 @@ PIXEL_WIDTH = 16
 PIXEL_HEIGHT = 10
 
 # Alternatively specify a hardware SPI connection on /dev/spidev0.0:
-SPI_PORT = 1
-SPI_DEVICE = 1
+SPI_PORT = 0
+SPI_DEVICE = 0
 pixels = Adafruit_WS2801.WS2801Pixels(PIXEL_COUNT, spi=SPI.SpiDev(SPI_PORT, SPI_DEVICE), gpio=GPIO)
 
 # colors
