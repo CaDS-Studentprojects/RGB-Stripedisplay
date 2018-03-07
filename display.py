@@ -66,7 +66,7 @@ def main():
     try:
         while True:
             time.sleep(5)
-            print "Tick"
+            #print "Tick"
     except KeyboardInterrupt:
         server.stop(0)
 
