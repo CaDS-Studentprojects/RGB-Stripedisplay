@@ -41,9 +41,19 @@ colors = [[white for y in range(PIXEL_HEIGHT)] for x in range(PIXEL_WIDTH)]
 
 class GRPC_Server(display_server_pb2_grpc.WS2801_DisplayServicer):
 
-    def DISPLAY_Change(self, request, context):
+
+
+    def DISPLAY_CHANGE(self, request, context):
         print "Received DISPLAY Change."
-        print request
+        print "Versionsnummer: {}".format(request.version)
+        print "Typ: {}".format(request.typ)
+        print "Dimension X: {}".format(request.dim_x)
+        print "Dimension Y: {}".format(request.dim_y)
+
+        print request.pixel_list
+
+
+        ###### Handle msg into display
         return display_server_pb2.DISPLAY_RESPONSE()
 
 def main():
