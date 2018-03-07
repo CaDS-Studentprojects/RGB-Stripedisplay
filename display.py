@@ -66,7 +66,7 @@ class GRPC_Server(display_server_pb2_grpc.WS2801_DisplayServicer):
         a = 0
         for y in range(PIXEL_HEIGHT):
             for x in range(PIXEL_WIDTH):
-                colors = [[pixel_color[x+a] for y in range(PIXEL_HEIGHT)] for x in range(PIXEL_WIDTH)]
+                colors = [[pixel_color[x+a] for y in range(PIXEL_WIDTH)] for x in range(PIXEL_HEIGHT)]
             a = a + 16
         print colors
         ###### Handle msg into display
