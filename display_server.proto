@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+package LED_display;
+
 // service definition
 service WS2801_Display {
    // Make RPC on function DISPLAY_CHANGE with message DISPLAY_MSG
