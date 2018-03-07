@@ -61,14 +61,14 @@ class GRPC_Server(display_server_pb2_grpc.WS2801_DisplayServicer):
             blue = pixel_color[x] >> 8 & 255
             red = pixel_color[x] >> 16 & 255
 
-            pixel_color[x] = "{}, {}, {}".format(red,blue,green)
-            print pixel_color[x]
+            pixel_color[x] = Adafruit_WS2801.RGB_to_color(red,blue,green)
 
-
-
-        colors = [[Adafruit_WS2801.RGB_to_color() for y in range(PIXEL_HEIGHT)] for x in range(PIXEL_WIDTH)]
-
-
+        a = 0
+        for y in range(PIXEL_HEIGHT):
+            for x in range(PIXEL_WIDTH):
+                colors = [[pixel_color[x+a]] for y in range(PIXEL_HEIGHT)] for x in range(PIXEL_WIDTH)]
+            a = a + 16
+        print colors
         ###### Handle msg into display
         return display_server_pb2.DISPLAY_RESPONSE()
 
