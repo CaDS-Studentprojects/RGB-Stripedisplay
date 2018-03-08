@@ -39,7 +39,7 @@ display = [[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
            [129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144],
            [160, 159, 158, 157, 156, 155, 154, 153, 152, 151, 150, 149, 148, 147, 146, 145]]
 
-colors = [[white for y in range(PIXEL_HEIGHT)] for x in range(PIXEL_WIDTH)]
+colors = [[white for y in range(PIXEL_WIDTH)] for x in range(PIXEL_HEIGHT)]
 
 class GRPC_Server(display_server_pb2_grpc.WS2801_DisplayServicer):
 
@@ -52,8 +52,9 @@ class GRPC_Server(display_server_pb2_grpc.WS2801_DisplayServicer):
         print "Dimension X: {}".format(request.dim_x)
         print "Dimension Y: {}".format(request.dim_y)
 
-        print request.pixel_list
-        pixel_color = request.pixel_list.split(",")
+        #print request.pixel_list
+        pixel_color = request.pixel_list.split(", ")
+	print "DISPLAY_CHANGE() - pixel_color: " + str(pixel_color)
 
         for x in range(PIXEL_COUNT):
             #print pixel_color[x]
@@ -63,15 +64,22 @@ class GRPC_Server(display_server_pb2_grpc.WS2801_DisplayServicer):
             blue = pixel_color[x] >> 8 & 255
             red = pixel_color[x] >> 16 & 255
 
-            pixel_color[x] = Adafruit_WS2801.RGB_to_color(red,blue,green)
+	    print "(" + str(green) + ", " + str(blue) + ", " + str(red) + ")" 
 
-        a = 0
+            pixel_color[x] = Adafruit_WS2801.RGB_to_color(red,blue,green)
+	    print "pixel_color after Adafruit conv: " + str(pixel_color)
+
         for y in range(PIXEL_HEIGHT):
             for x in range(PIXEL_WIDTH):
-                colors = [[pixel_color[x+a] for y in range(PIXEL_WIDTH)] for x in range(PIXEL_HEIGHT)]
-            a = a + 16
-        #print colors
+		print "x: " + str(x) + ", y:" + str(y)
+                colors[y][x] = pixel_color[x + (y * PIXEL_WIDTH)]
+
+        print "DISPLAY_CHANGE() - colors:"
+	print colors
         updateDisplay = 1
+
+	update(pixels, display, colors)
+
         ###### Handle msg into display
         return display_server_pb2.DISPLAY_RESPONSE()
 
@@ -85,9 +93,9 @@ def main():
     try:
         while True:
             time.sleep(5)
-            if updateDisplay is 1:
-                update(pixels, display, colors)
-            #print "Tick"
+#            if updateDisplay is 1:
+#               update(pixels, display, colors)
+            print "Tick"
     except KeyboardInterrupt:
         server.stop(0)
 
@@ -95,15 +103,24 @@ def main():
 def initialisation(pixels, display, colors):
     # Clear all the pixels to turn them off.
     pixels.clear()
-    for y in range(PIXEL_HEIGHT):
-        for x in range(PIXEL_WIDTH):
-            pixels.set_pixel(display[y][x] - 1, colors[x][y])
+    #for y in range(PIXEL_HEIGHT):
+    #    for x in range(PIXEL_WIDTH):
+    #        pixels.set_pixel(display[y][x] - 1, colors[x][y])
             # print "Display wert: {}".format(display[y][x] - 1 )
             # print "DisplayColor wert: {}".format(colors[x][y])
     pixels.show()  # Make sure to call show() after changing any pixels!
 
 def update(pixels, display, colors):
+    print "update() - colors: " #+ colors
     print colors
+ 
+    for y in range(PIXEL_HEIGHT):
+	for x in range(PIXEL_WIDTH):
+		pixels.set_pixel(display[y][x] - 1, colors[y][x])
+
+    print "update() - pixels:"
+    print pixels
+    pixels.show()
 
 if __name__ == "__main__":
     main()
