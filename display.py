@@ -56,6 +56,7 @@ class GRPC_Server(display_server_pb2_grpc.WS2801_DisplayServicer):
         pixel_color = request.pixel_list.split(", ")
 	print "DISPLAY_CHANGE() - pixel_color: " + str(pixel_color)
 
+        global updateDisplay
         for x in range(PIXEL_COUNT):
             #print pixel_color[x]
             pixel_color[x]=int(pixel_color[x])
