@@ -52,6 +52,8 @@ class GRPC_Server(display_server_pb2_grpc.WS2801_DisplayServicer):
         print "Dimension X: {}".format(request.dim_x)
         print "Dimension Y: {}".format(request.dim_y)
 
+        global updateDisplay
+
         print request.pixel_list
         pixel_color = request.pixel_list.split(",")
 
