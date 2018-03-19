@@ -46,6 +46,9 @@ class GRPC_Server(display_server_pb2_grpc.WS2801_DisplayServicer):
 
 
     def DISPLAY_CHANGE(self, request, context):
+
+        global updateDisplay
+
         print "Received DISPLAY Change."
         print "Versionsnummer: {}".format(request.version)
         print "Typ: {}".format(request.typ)
@@ -54,7 +57,7 @@ class GRPC_Server(display_server_pb2_grpc.WS2801_DisplayServicer):
 
         #print request.pixel_list
         pixel_color = request.pixel_list.split(", ")
-	print "DISPLAY_CHANGE() - pixel_color: " + str(pixel_color)
+	    print "DISPLAY_CHANGE() - pixel_color: " + str(pixel_color)
 
         global updateDisplay
         for x in range(PIXEL_COUNT):
@@ -65,7 +68,7 @@ class GRPC_Server(display_server_pb2_grpc.WS2801_DisplayServicer):
             blue = pixel_color[x] >> 8 & 255
             red = pixel_color[x] >> 16 & 255
 
-	    print "(" + str(green) + ", " + str(blue) + ", " + str(red) + ")" 
+	    print "(" + str(green) + ", " + str(blue) + ", " + str(red) + ")"
 
             pixel_color[x] = Adafruit_WS2801.RGB_to_color(red,blue,green)
 	    print "pixel_color after Adafruit conv: " + str(pixel_color)
@@ -114,7 +117,7 @@ def initialisation(pixels, display, colors):
 def update(pixels, display, colors):
     print "update() - colors: " #+ colors
     print colors
- 
+
     for y in range(PIXEL_HEIGHT):
 	for x in range(PIXEL_WIDTH):
 		pixels.set_pixel(display[y][x] - 1, colors[y][x])
